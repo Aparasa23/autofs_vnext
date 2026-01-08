@@ -1,0 +1,23 @@
+# Optional / plugin dependencies (install only if you enable corresponding methods)
+# Boosting models
+xgboost>=1.7
+lightgbm>=4.0
+catboost>=1.2
+
+# Boruta
+boruta>=0.3
+
+# MIC (minepy can be tricky to build on some platforms)
+minepy>=1.2
+
+# Genetic feature selection
+sklearn-genetic-opt>=0.10
+
+# ReliefF / skrebate
+skrebate>=0.62
+
+# Credit risk IV/WOE (optional)
+# scorecardpy>=0.1.9
+
+# SHAP-based selection (optional, expensive)
+shap>=0.43
