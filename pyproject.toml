@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autofs-vnext"
+version = "0.1.0"
+description = "AutoFS vNext - feature selection platform (reference implementation)"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.22",
+  "pandas>=1.5",
+  "scikit-learn>=1.2",
+  "scipy>=1.9",
+  "joblib>=1.2",
+  "pyyaml>=6.0",
+  "tqdm>=4.65",
+  "pyarrow>=10.0",
+]
+
+[project.scripts]
+autofs-vnext = "autofs_vnext.cli:main"

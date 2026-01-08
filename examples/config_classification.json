@@ -1,0 +1,122 @@
+{
+  "task": "classification",
+  "input": {
+    "path": "/mnt/data/autofs_vnext/examples/sample_classification.csv",
+    "format": "csv",
+    "target": "target",
+    "drop_columns": []
+  },
+  "preprocess": {
+    "categorical_strategy": "onehot",
+    "numeric_impute": "median",
+    "categorical_impute": "most_frequent",
+    "scale_numeric": true,
+    "max_ohe_levels": 200,
+    "sparse_ohe": true
+  },
+  "cv": {
+    "scheme": "stratified_kfold",
+    "n_splits": 5,
+    "shuffle": true,
+    "random_state": 42
+  },
+  "budget": {
+    "max_rows": 50000,
+    "max_features_after_screen": 2000,
+    "per_method_timeout_sec": null,
+    "n_jobs": -1
+  },
+  "phases": [
+    {
+      "name": "Phase_1",
+      "top_k": 500,
+      "methods": [
+        {
+          "name": "variance",
+          "params": {
+            "threshold": 0.0
+          },
+          "enabled": true
+        },
+        {
+          "name": "univariate_f_classif",
+          "params": {},
+          "enabled": true
+        },
+        {
+          "name": "univariate_mutual_info",
+          "params": {},
+          "enabled": true
+        },
+        {
+          "name": "l1_logistic",
+          "params": {
+            "C": 1.0
+          },
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "Phase_2",
+      "top_k": null,
+      "methods": [
+        {
+          "name": "rfe_logistic",
+          "params": {
+            "n_features_to_select": 150,
+            "step": 0.2
+          },
+          "enabled": true
+        },
+        {
+          "name": "perm_importance_logistic",
+          "params": {
+            "scoring": "accuracy",
+            "n_repeats": 8
+          },
+          "enabled": true
+        },
+        {
+          "name": "rf_importance_clf",
+          "params": {
+            "n_estimators": 300
+          },
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "aggregation": {
+    "strategy": "rrf",
+    "rrf_k": 60,
+    "use_stability": true,
+    "stability_weight": 0.35,
+    "redundancy_penalty": false,
+    "redundancy_weight": 0.15
+  },
+  "stability": {
+    "enabled": true,
+    "n_resamples": 15,
+    "sample_frac": 0.75,
+    "base_method": "l1_logistic",
+    "base_params": {
+      "C": 1.0
+    }
+  },
+  "redundancy": {
+    "enabled": false,
+    "corr_method": "pearson",
+    "corr_threshold": 0.95,
+    "representative": "best_ranked",
+    "top_n": 1
+  },
+  "selection": {
+    "policy": "top_k",
+    "top_k": 120
+  },
+  "output": {
+    "dir": "autofs_out",
+    "run_name": "demo_classification"
+  }
+}
